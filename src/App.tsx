@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./styles.css";
+
+interface Transferencia {
+  id: number;
+  dataTransferencia: string;
+  valor: number;
+  tipo: string;
+  nomeOperadorTransacao: string;
+}
 
 function App() {
   const [dataInicial, setDataInicial] = useState("");
   const [dataFinal, setDataFinal] = useState("");
   const [operador, setOperador] = useState("");
-  const [transferencias, setTransferencias] = useState([]);
+  const [transferencias, setTransferencias] = useState<Transferencia[]>([]);
   const [saldoPeriodo, setSaldoPeriodo] = useState(0);
   const [saldoTotal, setSaldoTotal] = useState(0);
 
@@ -18,9 +26,13 @@ function App() {
     fetchData();
   }, []);
 
-  const searchTransactions = async (dataInicial, dataFinal, operador) => {
-    const novaDataInicial = encodeURIComponent(dataInicial);
-    const novaDataFinal = encodeURIComponent(dataFinal);
+  const buscarTransacoes = async (
+    dataInicial: string,
+    dataFinal: string,
+    operador: string
+  ) => {
+    const novaDataInicial = dataInicial;
+    const novaDataFinal = dataFinal;
     const novoOperador = operador;
     let response;
 
@@ -46,7 +58,7 @@ function App() {
     setTransferencias(data);
 
     let saldo = 0;
-    data.forEach((transferencia) => {
+    data.forEach((transferencia: Transferencia) => {
       saldo += transferencia.valor;
     });
     setSaldoPeriodo(saldo);
@@ -55,26 +67,26 @@ function App() {
 
   return (
     <div className="container">
-      <div className="data-inicio">
-        <label htmlFor="start-date">Data Inícial:</label>
+      <div className="data-inicial">
+        <label htmlFor="data-inicial">Data Inícial:</label>
         <input
           type="date"
-          id="start-date"
+          id="data-inicial"
           value={dataInicial}
-          onChange={(e) => setDataFinal(e.target.value)}
+          onChange={(e) => setDataInicial(e.target.value)}
         />
       </div>
-      <div className="data-fim">
-        <label htmlFor="end-date">Data Final:</label>
+      <div className="data-final">
+        <label htmlFor="data-final">Data Final:</label>
         <input
           type="date"
-          id="end-date"
+          id="data-final"
           value={dataFinal}
           onChange={(e) => setDataFinal(e.target.value)}
         />
       </div>
       <div className="nome-operador">
-        <label htmlFor="operator">Nome do operador:</label>
+        <label htmlFor="operador">Nome do operador:</label>
         <input
           type="text"
           id="operator"
@@ -84,7 +96,7 @@ function App() {
       </div>
       <div className="form-pesquisar">
         <button
-          onClick={() => searchTransactions(dataInicial, dataFinal, operador)}
+          onClick={() => buscarTransacoes(dataInicial, dataFinal, operador)}
         >
           Pesquisar
         </button>
@@ -116,7 +128,9 @@ function App() {
         <tbody>
           {transferencias.map((item) => (
             <tr key={item.id}>
-              <td>{item.dataTransferencia.substring(0, 10)}</td>
+              <td>
+                {new Date(item.dataTransferencia).toLocaleDateString("pt-BR")}
+              </td>
               <td>{"R$ " + item.valor}</td>
               <td>{item.tipo}</td>
               <td>{item.nomeOperadorTransacao}</td>

@@ -1,26 +1,30 @@
 .container {
-  border: red 1px solid;
+  border-radius: 5px;
+  margin-top: 5px;
   position: relative;
   width: 80%;
   margin: auto;
   display: flex;
   height: 100%;
-  background: -webkit-linear-gradient(top, #e99cf0 20%, #eb71da 100%);
+  background: -webkit-linear-gradient(top, #770999 20%, #6a097e 100%);
   padding: 5vw 0vw 5vw 0vw;
 }
 
-.data-inicio,
-.data-fim,
-.nome-operador,
-.form-pesquisar {
+.data-inicial,
+.data-final,
+.nome-operador {
   border: rgb(76, 0, 255) 1px solid;
+  border-radius: 5px;
   margin-right: 16px;
   padding: 5px;
   font-weight: bold;
 }
+.form-pesquisar {
+}
 
 label {
-  border: rgb(0, 255, 0) 1px solid;
+  color: white;
+  border-radius: 5px;
   font-size: 16px;
   margin-right: 8px;
 }
@@ -54,7 +58,6 @@ button:hover {
 }
 
 .saldo {
-  border: rgb(0, 255, 106) 1px solid;
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
@@ -76,6 +79,7 @@ table {
 th,
 td {
   border: red 1px solid;
+  border-radius: 5px;
   /* border: 1px solid #ddd; */
   padding: 8px;
   text-align: left;
