@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "strict": true,
+    "module": "esnext",
+    "target": "esnext"
+  },
+  "include": ["src"]
+}
