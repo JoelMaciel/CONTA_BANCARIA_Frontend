@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./styles.css";
 
 interface Transferencia {
@@ -10,60 +10,76 @@ interface Transferencia {
 }
 
 function App() {
-  const [dataInicial, setDataInicial] = useState("");
-  const [dataFinal, setDataFinal] = useState("");
-  const [operador, setOperador] = useState("");
+  const [dataInicial, setDataInicial] = useState<string>();
+  const [dataFinal, setDataFinal] = useState<string>();
+  const [operador, setOperador] = useState<string>();
   const [transferencias, setTransferencias] = useState<Transferencia[]>([]);
   const [saldoPeriodo, setSaldoPeriodo] = useState(0);
   const [saldoTotal, setSaldoTotal] = useState(0);
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const [totalPaginas, setTotalPaginas] = useState<number>();
+  const itensPorPagina = 4;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("http://localhost:8080/api/transferencias/");
-      const data = await response.json();
-      setTransferencias(data);
-    };
-    fetchData();
-  }, []);
+  const irParaPaginaAnterior = () => {
+    if (paginaAtual > 1) {
+      setPaginaAtual(paginaAtual - 1);
+    }
+  };
 
-  const buscarTransacoes = async (
-    dataInicial: string,
-    dataFinal: string,
-    operador: string
-  ) => {
-    const novaDataInicial = dataInicial;
-    const novaDataFinal = dataFinal;
-    const novoOperador = operador;
-    let response;
-
-    if (
-      (dataInicial.length === 0 || dataFinal.length === 0) &&
-      operador.length === 0
-    ) {
-      response = await fetch("http://localhost:8080/api/transferencias/");
-    } else if (
-      (dataInicial.length === 0 || dataFinal.length === 0) &&
-      operador.length >= 1
-    ) {
-      response = await fetch(
-        `http://localhost:8080/api/transferencias?nomeOperadorTransacao=${novoOperador}`
-      );
-    } else {
-      response = await fetch(
-        `http://localhost:8080/api/transferencias?dataInicial=${novaDataInicial}&dataFinal=${novaDataFinal}`
-      );
+  const irParaProximaPagina = () => {
+    if (paginaAtual < (totalPaginas as number)) {
+      setPaginaAtual(paginaAtual + 1);
     }
 
+    console.log(totalPaginas);
+  };
+
+  const buscarTransacoes = useCallback(async () => {
+    const objetoRequisicao = {
+      page: paginaAtual - 1,
+      size: itensPorPagina,
+      nomeOperadorTransacao: operador,
+      dataInicial: dataInicial,
+      dataFinal: dataFinal,
+    };
+
+    const filteredParams = Object.entries(objetoRequisicao)
+      .filter(([key, value]) => value !== undefined)
+      .reduce((obj: Record<string, any>, [key, value]) => {
+        obj[key] = value;
+        return obj;
+      }, {});
+
+    const queryParams = new URLSearchParams(filteredParams as any);
+    console.log(queryParams);
+
+    for (const [key, value] of queryParams.entries()) {
+      if (value === "undefined") {
+        queryParams.delete(key);
+      }
+    }
+
+    console.log(queryParams.toString());
+
+    const response = await fetch(
+      "http://localhost:8080/api/transferencias?" + queryParams.toString()
+    );
     const data = await response.json();
-    setTransferencias(data);
+    const contentTransferencia = data.content || [];
+    setTransferencias(contentTransferencia);
+    setTotalPaginas(data.totalPages || 1);
 
     let saldo = 0;
-    data.forEach((transferencia: Transferencia) => {
+    contentTransferencia.forEach((transferencia: Transferencia) => {
       saldo += transferencia.valor;
     });
     setSaldoPeriodo(saldo);
     setSaldoTotal(saldo);
-  };
+  }, [operador, dataInicial, dataFinal, paginaAtual, itensPorPagina]);
+
+  useEffect(() => {
+    buscarTransacoes();
+  }, [buscarTransacoes]);
 
   return (
     <div className="container">
@@ -95,11 +111,7 @@ function App() {
         />
       </div>
       <div className="form-pesquisar">
-        <button
-          onClick={() => buscarTransacoes(dataInicial, dataFinal, operador)}
-        >
-          Pesquisar
-        </button>
+        <button onClick={() => setPaginaAtual(1)}>Pesquisar</button>
       </div>
       <br />
       <table>
@@ -137,6 +149,27 @@ function App() {
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <td style={{ textAlign: "center" }} colSpan={4}>
+              <div className="pagination">
+                <button
+                  onClick={irParaPaginaAnterior}
+                  disabled={paginaAtual === 1}
+                >
+                  Anterior
+                </button>
+                <span>{paginaAtual}</span>
+                <button
+                  onClick={irParaProximaPagina}
+                  disabled={paginaAtual === totalPaginas}
+                >
+                  Próxima
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );
