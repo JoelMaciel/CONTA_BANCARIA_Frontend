@@ -30,8 +30,6 @@ function App() {
     if (paginaAtual < (totalPaginas as number)) {
       setPaginaAtual(paginaAtual + 1);
     }
-
-    console.log(totalPaginas);
   };
 
   const buscarTransacoes = useCallback(async () => {
@@ -51,15 +49,12 @@ function App() {
       }, {});
 
     const queryParams = new URLSearchParams(filteredParams as any);
-    console.log(queryParams);
 
     for (const [key, value] of queryParams.entries()) {
       if (value === "undefined") {
         queryParams.delete(key);
       }
     }
-
-    console.log(queryParams.toString());
 
     const response = await fetch(
       "http://localhost:8080/api/transferencias?" + queryParams.toString()
