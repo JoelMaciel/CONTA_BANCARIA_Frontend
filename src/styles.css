@@ -6,20 +6,17 @@
   margin: auto;
   display: flex;
   height: 100%;
-  background: -webkit-linear-gradient(top, #770999 20%, #6a097e 100%);
-  padding: 5vw 0vw 5vw 0vw;
+  background: -webkit-linear-gradient(top, #742f8b 20%, #701083 100%);
+  padding: 3vw 0vw 3vw 0vw;
 }
 
 .data-inicial,
 .data-final,
 .nome-operador {
-  border: rgb(76, 0, 255) 1px solid;
   border-radius: 5px;
   margin-right: 16px;
   padding: 5px;
   font-weight: bold;
-}
-.form-pesquisar {
 }
 
 label {
@@ -31,7 +28,6 @@ label {
 
 input[type="date"],
 input[type="text"] {
-  border: rgb(225, 0, 255) 1px solid;
   width: 200px;
   height: 32px;
   font-size: 14px;
@@ -41,32 +37,53 @@ input[type="text"] {
 }
 
 button {
-  border: rgb(0, 255, 179) 1px solid;
   width: 120px;
   height: 32px;
+  margin: 4px;
   font-size: 14px;
   font-weight: bold;
   color: white;
-  background-color: #021b36;
+  background-color: #538853;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: transform 0.6s;
 }
 
 button:hover {
-  background-color: #012b58;
+  background-color: #0e530e;
+  transform: scale(1.1);
+}
+.pesquisar {
+  margin-right: 10px;
+  margin-top: 25px;
+}
+
+.pagination {
+  margin-right: 15px;
+  margin-top: 15px;
+}
+.pagination2 {
+  margin-left: 15px;
+  margin-top: 15px;
 }
 
 .saldo {
-  display: flex;
-  justify-content: space-between;
   margin-bottom: 10px;
+  color: #434643;
   padding: 20px;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.saldo-tyle {
+  color: #701083;
 }
 
 table {
-  border: rgb(174, 0, 255) 1px solid;
+  color: #701083;
+  background-color: #e6dfe7;
+  border-radius: 8px;
   position: absolute;
   top: 100%;
   left: 0;
@@ -78,9 +95,7 @@ table {
 
 th,
 td {
-  border: red 1px solid;
   border-radius: 5px;
-  /* border: 1px solid #ddd; */
   padding: 8px;
   text-align: left;
 }
@@ -91,4 +106,5 @@ th {
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
+  color: rgb(73, 71, 71);
 }

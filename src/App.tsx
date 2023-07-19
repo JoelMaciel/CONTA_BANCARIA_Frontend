@@ -105,8 +105,10 @@ function App() {
           onChange={(e) => setOperador(e.target.value)}
         />
       </div>
-      <div className="form-pesquisar">
-        <button onClick={() => setPaginaAtual(1)}>Pesquisar</button>
+      <div>
+        <button className="pesquisar" onClick={() => setPaginaAtual(1)}>
+          Pesquisar
+        </button>
       </div>
       <br />
       <table>
@@ -114,13 +116,13 @@ function App() {
           <tr className="saldo">
             <th className="saldo-total">
               <label>
-                <b>Saldo total:</b>
+                <b className="saldo-tyle">Saldo total:</b>
               </label>
               <span>{"R$ " + saldoTotal.toFixed(2)}</span>
             </th>
             <th className="saldo-periodo">
               <label>
-                <b>Saldo no período:</b>
+                <b className="saldo-tyle">Saldo no período:</b>
               </label>
               <span>{"R$ " + saldoPeriodo.toFixed(2)}</span>
             </th>
@@ -147,8 +149,9 @@ function App() {
         <tfoot>
           <tr>
             <td style={{ textAlign: "center" }} colSpan={4}>
-              <div className="pagination">
+              <div>
                 <button
+                  className="pagination"
                   onClick={irParaPaginaAnterior}
                   disabled={paginaAtual === 1}
                 >
@@ -156,6 +159,7 @@ function App() {
                 </button>
                 <span>{paginaAtual}</span>
                 <button
+                  className="pagination2"
                   onClick={irParaProximaPagina}
                   disabled={paginaAtual === totalPaginas}
                 >
