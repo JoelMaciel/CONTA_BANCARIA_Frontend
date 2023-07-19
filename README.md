@@ -6,7 +6,25 @@ Listagem de operações bancárias onde é possível listar por nome do operador
 
 ReactJS
 
-### Qaundo fizer a busca por Nome do Operador use os seguientes nomes:
+
+### Para testar o projeto siga os seguinte passo:
+
+- Crie um pasta, abra o termial no mesmo diretório e digite o comando:
+
+  
+  git clone https://github.com/JoelMaciel/CONTA_BANCARIA_Frontend.git
+  
+- Baixe os pacotes e dependencias do projeto:
+
+
+  npm install
+
+ - Para visualizar o projeto rode o comando:
+ 
+
+   npm start 
+
+### Quando fizer a busca por Nome do Operador use os seguientes nomes:
  - Beltrano
  - Ronnyscley
  - Sicrano
